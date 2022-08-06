@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Whack-a-Roach!</title>
+  <link href='https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="heading">
+      <p>
+        Whack-a-Roach! >=)
+      </p>
+    </div>
+    <div class="score">Points: <span>0</span></div>
+    <div class="cracksCont">
+     <div class="crack crack1">
+    </div>
+     <div class="crack crack2">
+     </div>
+     <div class="crack crack3">
+     </div>
+     <div class="crack crack4">
+     </div>
+     <div class="crack crack5">
+     </div>
+     <div class="crack crack6">
+     </div>
+     <div class="crack crack7">
+     </div>
+     <div class="crack crack8">
+     </div>
+     <div class="crack crack9">
+     </div>
+    </div>
+    <div class="buttons">
+      <button class="play">PLAY</button>
+      <button class="stop">STOP</button>
+    </div>
+    <div class="cursor">
+      <img src="./swatter.png" />
+    </div>
+  </div>
+
+  <script>
+    const score = document.querySelector(".score span");
+    const cracks = document.querySelectorAll(".crack");
+    const playBtn = document.querySelector(".buttons .play");
+    const stopBtn = document.querySelector(".buttons .stop");
+    const cursor = document.querySelector(".cursor img");
+
+    window.addEventListener("mousemove", (e) => {
+      cursor.style.top = e.pageY + "px";
+      cursor.style.left = e.pageX + "px";
+
+      window.addEventListener("click", () => {
+        cursor.style.animation = "hit 0.1 ease";
+        setTimeout(()=>{
+          cursor.style.removeProperty("animation");
+        }, 100);
+      });
+    });
+
+    playBtn.addEventListener("click", () => {
+      playBtn.style.display = "none";
+      stopBtn.style.display = "inline-block";
+
+      let crack;
+      let points = 0;
+
+      const startGame = setInterval(() => {
+        let arrayNo = Math.floor(Math.random() * 9);
+        crack = cracks[arrayNo];
+
+        let image = document.createElement("img");
+        image.setAttribute("src", "./roach.svg");
+        image.setAttribute("class", "roach");
+        crack.appendChild(image);
+
+        setTimeout(() => {
+          crack.removeChild(image);
+        }, 600);
+      }, 700);
+
+      window.addEventListener("click", (e) => {
+        if(e.target === crack) score.innerText = ++points;
+      });
+
+      stopBtn.addEventListener("click", () => {
+        clearInterval(startGame);
+        stopBtn.style.display = "none";
+        playBtn.style.display = "inline-block";
+        score.innerText = 0;
+      });
+
+    });
+  </script>
+</body>
+</html>
